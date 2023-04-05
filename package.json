@@ -1,0 +1,27 @@
+{
+  "name": "twitter-news-bot",
+  "version": "1.0.0",
+  "description": "A bot that summarized 3 crypto news articles per day by using the OpenAI Chat-GPT4 model.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canadiancode/Twitter-news-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/canadiancode/Twitter-news-bot/issues"
+  },
+  "homepage": "https://github.com/canadiancode/Twitter-news-bot#readme",
+  "devDependencies": {
+    "axios": "^1.3.4",
+    "dotenv": "^16.0.3",
+    "openai": "^3.2.1",
+    "puppeteer": "^19.8.3",
+    "twitter-api-v2": "^1.14.2"
+  }
+}
