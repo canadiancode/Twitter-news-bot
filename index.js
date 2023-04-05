@@ -19,6 +19,7 @@ let tweet_Array = [];
 // FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT
 
 const puppeteer = require('puppeteer');
+// const puppeteerConfig = require("./puppeteer.config.js");
 
 // function to scrape paragraph elements from URL
 async function scrapeArticle(url) {
@@ -44,7 +45,7 @@ async function scrapeArticle(url) {
         let formattedArticle = articleContent.join(' ');
         article_Content_Array.push(formattedArticle);
 
-        browser.close();
+        await browser.close();
 
         console.log('scraped the site!')
 
@@ -75,7 +76,7 @@ async function summarizeArticle(scrapedArticle) {
 
     try {
 
-        const prompt = `Summarize the article below into a single tweet, and add appropriate hashtags at the end of the tweet. Make sure the entire tweet is under 150 characters in length:
+        const prompt = `Summarize the article below into a single tweet, and add two appropriate hashtags at the end of the tweet. Make sure the entire tweet is under 150 characters in length:
         ${scrapedArticle}
         `;
     
