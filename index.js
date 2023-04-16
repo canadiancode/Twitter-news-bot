@@ -27,7 +27,15 @@ async function scrapeArticle(url) {
 
     try {
         // set up the browser and navigate to URL
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--single-process',
+                '--no-zygote',
+              ],
+        });
         const page = await browser.newPage();
         await page.goto(url);
 
@@ -202,6 +210,8 @@ function runTwitterBot() {
 
 };
 
+// runTwitterBot();
+
 
 // SCHEDULE THE CRONJOB
 
@@ -218,4 +228,4 @@ scheduledTask.start();
 
 
 // Keep the process running with an empty asynchronous function
-(async () => {})();
+// (async () => {})();
