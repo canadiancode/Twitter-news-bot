@@ -215,3 +215,7 @@ const scheduledTask = cron.schedule('0 6 * * *', runTwitterBot, {
 
 // Start the scheduled task
 scheduledTask.start();
+
+
+// Keep the process running with an empty asynchronous function
+(async () => {})();
