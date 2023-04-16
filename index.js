@@ -4,6 +4,7 @@
     // puppeteer:          headless browser controlled by code
     // openai:             post prompt to OpenAI to summerize articles 
     // twitter-api-v2:     twitter API
+    // node-cron:          CronJob is for scheduling the code to automatically run
 
 
 // Require dotenv to import API keys and run .config to load the API keys into the index.js file 
@@ -141,57 +142,80 @@ const options = {
 // running this function using CronJob
 
 // retrieve the URL's from Rapid API
-axios.request(options).then(
 
-    async function (response) {
+function runTwitterBot() {
 
-    // remove old Titles, URL's, Articles, and Tweets from the previous day
-    article_URL_Array = [];
-    article_Title_Array = [];   
-    article_Content_Array = []; 
-    tweet_Array = [];
+    axios.request(options).then(
 
-    // loop through fetch data and push the URL's into an array
-    response.data.forEach(data => {
-        let title = data.title;
-        let url = data.url;
-        article_Title_Array.push(title);
-        article_URL_Array.push(url);
+        async function (response) {
+    
+        // remove old Titles, URL's, Articles, and Tweets from the previous day
+        article_URL_Array = [];
+        article_Title_Array = [];   
+        article_Content_Array = []; 
+        tweet_Array = [];
+    
+        // loop through fetch data and push the URL's into an array
+        response.data.forEach(data => {
+            let title = data.title;
+            let url = data.url;
+            article_Title_Array.push(title);
+            article_URL_Array.push(url);
+        });
+    
+        // looping over each URL to scrape
+        for (let i = 0; i < article_URL_Array.length; i++) {
+            await scrapeArticle(article_URL_Array[i]);
+        };
+    
+        // looping over articles for OpenAI to summarize 
+        for (const article of article_Content_Array) {
+            await summarizeArticle(article);
+        };
+    
+        // posting the tweets made fro OpenAI
+        console.log('starting the for loop after summarizing all articles');
+        for (const tweetPost of tweet_Array) {
+            if (tweetPost === tweet_Array[0]) {
+                await tweet(tweetPost)
+                console.log(tweetPost)
+            } else if (tweetPost === tweet_Array[1]) {
+                setTimeout(await function() {
+                    tweet(tweetPost)
+                    console.log(tweetPost)
+                }, 10800000)  // 10800000 = 3 hours // 300000 = 5 minutes
+            } else if (tweetPost === tweet_Array[2]) {
+                setTimeout(await function() {
+                    tweet(tweetPost)
+                    console.log(tweetPost)
+                }, 21600000) // 21600000 = 6 hours  // 600000 = 10 minutes
+            } else {
+                console.log('No additional tweets to send out');
+            }
+        }
+    
+    }).catch(
+        function (error) {
+        console.error(error);
+        console.log('Could not tweet articles...');
     });
 
-    // looping over each URL to scrape
-    for (let i = 0; i < article_URL_Array.length; i++) {
-        await scrapeArticle(article_URL_Array[i]);
-    };
+};
 
-    // looping over articles for OpenAI to summarize 
-    for (const article of article_Content_Array) {
-        await summarizeArticle(article);
-    };
 
-    // posting the tweets made fro OpenAI
-    console.log('starting the for loop after summarizing all articles');
-    for (const tweetPost of tweet_Array) {
-        if (tweetPost === tweet_Array[0]) {
-            await tweet(tweetPost)
-            console.log(tweetPost)
-        } else if (tweetPost === tweet_Array[1]) {
-            setTimeout(await function() {
-                tweet(tweetPost)
-                console.log(tweetPost)
-            }, 10800000)  // 10800000 = 3 hours // 300000 = 5 minutes
-        } else if (tweetPost === tweet_Array[2]) {
-            setTimeout(await function() {
-                tweet(tweetPost)
-                console.log(tweetPost)
-            }, 21600000) // 21600000 = 6 hours  // 600000 = 10 minutes
-        } else {
-            console.log('No additional tweets to send out');
-        }
-    }
+// SCHEDULE THE CRONJOB
 
-}).catch(
-    function (error) {
-    console.error(error);
-    console.log('Could not tweet articles...');
+const cron = require('node-cron');
+
+// Schedule the task to run at 6 am PST every day
+const scheduledTask = cron.schedule('0 6 * * *', runTwitterBot, {
+  scheduled: true,
+  timezone: 'America/Los_Angeles',
 });
+
+// Start the scheduled task
+scheduledTask.start();
+
+
+// Keep the process running with an empty asynchronous function
+(async () => {})();
