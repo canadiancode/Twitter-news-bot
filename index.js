@@ -101,6 +101,7 @@ async function summarizeArticle(scrapedArticle) {
         let formattedTweet = summarizedTweet.trim();
         tweet_Array.push(formattedTweet);
         console.log('OpenAI made the tweet!');
+        console.log(formattedTweet);
 
     } catch(error) {
         console.log(error);
