@@ -211,7 +211,7 @@ function runTwitterBot() {
 
 };
 
-// runTwitterBot();
+runTwitterBot();
 
 
 // SCHEDULE THE CRONJOB
