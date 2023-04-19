@@ -6,6 +6,8 @@
     // twitter-api-v2:     twitter API
     // node-cron:          CronJob is for scheduling the code to automatically run
 
+    // path:               set the cache path for Heroku
+
 
 // Require dotenv to import API keys and run .config to load the API keys into the index.js file 
 require('dotenv').config();
@@ -20,12 +22,18 @@ let tweet_Array = [];
 // FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT
 
 const puppeteer = require('puppeteer');
-// const puppeteerConfig = require("./puppeteer.config.js");
+
+// for the cache configuration
+const path = require('path');
 
 // function to scrape paragraph elements from URL
 async function scrapeArticle(url) {
 
     try {
+
+        // Set the cache directory within the writable /tmp directory
+        const cacheDir = path.join(__dirname, '/tmp/cache/puppeteer');
+
         // set up the browser and navigate to URL
         const browser = await puppeteer.launch({
             args: [
@@ -34,7 +42,9 @@ async function scrapeArticle(url) {
                 '--disable-dev-shm-usage',
                 '--single-process',
                 '--no-zygote',
+                `--disk-cache-dir=${cacheDir}`
               ],
+              headless: true
         });
         const page = await browser.newPage();
         await page.goto(url);
@@ -192,12 +202,12 @@ function runTwitterBot() {
                 setTimeout(await function() {
                     tweet(tweetPost)
                     console.log(tweetPost)
-                }, 10800000)  // 10800000 = 3 hours // 300000 = 5 minutes
+                }, 60000)  // 10800000 = 3 hours // 300000 = 5 minutes
             } else if (tweetPost === tweet_Array[2]) {
                 setTimeout(await function() {
                     tweet(tweetPost)
                     console.log(tweetPost)
-                }, 21600000) // 21600000 = 6 hours  // 600000 = 10 minutes
+                }, 120000) // 21600000 = 6 hours  // 600000 = 10 minutes
             } else {
                 console.log('No additional tweets to send out');
             }
