@@ -44,6 +44,7 @@ async function scrapeArticle(url) {
                 '--no-zygote',
                 `--disk-cache-dir=${cacheDir}`
               ],
+              executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '',
               headless: true
         });
         const page = await browser.newPage();
