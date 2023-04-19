@@ -202,12 +202,12 @@ function runTwitterBot() {
                 setTimeout(await function() {
                     tweet(tweetPost)
                     console.log(tweetPost)
-                }, 60000)  // 10800000 = 3 hours // 300000 = 5 minutes
+                }, 10800000)  // 10800000 = 3 hours // 300000 = 5 minutes
             } else if (tweetPost === tweet_Array[2]) {
                 setTimeout(await function() {
                     tweet(tweetPost)
                     console.log(tweetPost)
-                }, 120000) // 21600000 = 6 hours  // 600000 = 10 minutes
+                }, 21600000) // 21600000 = 6 hours  // 600000 = 10 minutes
             } else {
                 console.log('No additional tweets to send out');
             }
