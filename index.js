@@ -5,7 +5,6 @@
     // openai:             post prompt to OpenAI to summerize articles 
     // twitter-api-v2:     twitter API
     // node-cron:          CronJob is for scheduling the code to automatically run
-
     // path:               set the cache path for Heroku
 
 
