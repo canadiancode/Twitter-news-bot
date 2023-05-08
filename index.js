@@ -202,7 +202,7 @@ function runTwitterBot() {
             article_Title_Array.splice(0, numberOfOldArticles);
         }
 
-        console.log(article_URL_Array);
+        console.log(article_URL_Array); 
     
         // looping over each URL to scrape
         for (let i = 0; i < article_URL_Array.length; i++) {
