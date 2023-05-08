@@ -90,12 +90,15 @@ const configuration = new Configuration({
 // Add the fethced API to the first argument of the post request
 const openai = new OpenAIApi(configuration);
 
-// Function to request OpenAI to run prompt
+// Function to request OpenAI to run prompt\
+
+const callToAction = ['\n\nFollow for more real time news ❤️', '\n\nShow support and press the buttons👇🏻🥹', '\n\nStay updated, hit follow! 🔔✨', '\n\nFollow for daily insights! 🧠📊', '\n\nDont miss out, follow today! 📈🔥', '\n\nGet the latest, follow here! 🎯⚡', '\n\nShare the love, follow us! 💙🔄', '\n\nTap follow for trending news! 📣🌍', '\n\nKeep up with us, hit follow! 🏃💡', '\n\nJoin our growing community! 🌱👥', '\n\nStay ahead, follow for updates! 🚀📲', '\n\nBe in the loop, follow and share! 🔄⭕', '\n\nFollow for your daily dose! ☕📅', '\n\nStay informed, tap follow! 🎓🌐', '\n\nJoin us, follow for more! 🤝🔝', '\n\nGet the scoop, follow now! 🍦📰', '\n\nFollow for real-time updates! ⏰🌟', '\n\nYour news hub, follow us! 📌🗂️', '\n\nStay current, follow us today! 📆🔍', '\n\nFollow and stay tuned! 📺🔊'];
+
 async function summarizeArticle(scrapedArticle) {
 
     try {
 
-        const prompt = `Summarize the article below into a single tweet, and add two appropriate hashtags at the end of the tweet. Make sure the entire tweet is under 150 characters in length:
+        const prompt = `Compose a viral-worthy tweet between 120-140 characters summarizing the article below. Include two relevant hashtags at the end. Ensure the tweet, including spaces, punctuation, and hashtags, stays within the specified character range:
         ${scrapedArticle}
         `;
     
@@ -106,12 +109,19 @@ async function summarizeArticle(scrapedArticle) {
             max_tokens: 100,
             temperature: 0
         });
+
+        // get random call to action index
+        const getRandomIndex = (arrayLength) => {
+            return Math.floor(Math.random() * arrayLength);
+        };
+        const randomIndex = getRandomIndex(callToAction.length);
     
         let summarizedTweet = response.data.choices[0].text;
         let formattedTweet = summarizedTweet.trim();
-        tweet_Array.push(formattedTweet);
+        let finalTweet = formattedTweet.concat(callToAction[randomIndex]);
+        tweet_Array.push(finalTweet);
         console.log('OpenAI made the tweet!');
-        console.log(formattedTweet);
+        console.log(finalTweet);
 
     } catch(error) {
         console.log(error);
@@ -150,7 +160,7 @@ const X_RapidAPI_KEY = process.env.X_RapidAPI_KEY;
 
 const options = {
   method: 'GET',
-  url: 'https://crypto-news16.p.rapidapi.com/news/top/3',
+  url: 'https://crypto-news16.p.rapidapi.com/news/top/5',
 
   headers: {
     'X-RapidAPI-Key': X_RapidAPI_KEY,
@@ -169,7 +179,7 @@ function runTwitterBot() {
         async function (response) {
     
         // remove old Titles, URL's, Articles, and Tweets from the previous day
-        article_URL_Array = [];
+        // article_URL_Array = [];
         article_Title_Array = [];   
         article_Content_Array = []; 
         tweet_Array = [];
@@ -179,8 +189,20 @@ function runTwitterBot() {
             let title = data.title;
             let url = data.url;
             article_Title_Array.push(title);
-            article_URL_Array.push(url);
+
+            if (article_URL_Array.includes(url)) {
+                console.log('already used the story')
+            } else {
+                article_URL_Array.push(url);
+            };
         });
+
+        if (article_Title_Array.length > 50) {
+            let numberOfOldArticles = 30 - article_Title_Array.length;
+            article_Title_Array.splice(0, numberOfOldArticles);
+        }
+
+        console.log(article_URL_Array);
     
         // looping over each URL to scrape
         for (let i = 0; i < article_URL_Array.length; i++) {
