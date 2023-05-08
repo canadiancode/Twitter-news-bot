@@ -99,7 +99,7 @@ async function summarizeArticle(scrapedArticle) {
 
     try {
 
-        const prompt = `Compose a viral-worthy tweet between 120-140 characters summarizing the article below. Include two relevant hashtags at the end. Ensure the tweet, including spaces, punctuation, and hashtags, stays within the specified character range:
+        const prompt = `Compose a viral-worthy tweet between 120-130 characters summarizing the article below. Include two relevant hashtags at the end. Ensure the tweet, including spaces, punctuation, and hashtags, stays within the specified character range of 120-130 characters:
         ${scrapedArticle}
         `;
     
@@ -184,7 +184,6 @@ function runTwitterBot() {
         tweet_Array = [];
         article_URL_Array = [];
 
-    
         // loop through fetch data and push the URL's into an array
         response.data.forEach(data => {
             let title = data.title;
@@ -192,7 +191,7 @@ function runTwitterBot() {
             article_Title_Array.push(title);
 
             if (used_Url_Array.includes(url)) {
-                console.log('already used the story');
+                console.log(`Already used the story: ${url}`);
             } else {
                 article_URL_Array.push(url);
                 used_Url_Array.push(url);
