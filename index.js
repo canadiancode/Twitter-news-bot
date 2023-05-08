@@ -13,6 +13,7 @@ require('dotenv').config();
 
 // The arrays for holding the URL, article, and tweet 
 let article_URL_Array = [];
+let used_Url_Array = [];
 let article_Title_Array = [];
 let article_Content_Array = [];
 let articleContent = [];
@@ -120,8 +121,7 @@ async function summarizeArticle(scrapedArticle) {
         let formattedTweet = summarizedTweet.trim();
         let finalTweet = formattedTweet.concat(callToAction[randomIndex]);
         tweet_Array.push(finalTweet);
-        console.log('OpenAI made the tweet!');
-        console.log(finalTweet);
+        console.log(`OpenAI made the tweet: ${finalTweet}`);
 
     } catch(error) {
         console.log(error);
@@ -179,10 +179,11 @@ function runTwitterBot() {
         async function (response) {
     
         // remove old Titles, URL's, Articles, and Tweets from the previous day
-        // article_URL_Array = [];
         article_Title_Array = [];   
         article_Content_Array = []; 
         tweet_Array = [];
+        article_URL_Array = [];
+
     
         // loop through fetch data and push the URL's into an array
         response.data.forEach(data => {
@@ -190,19 +191,18 @@ function runTwitterBot() {
             let url = data.url;
             article_Title_Array.push(title);
 
-            if (article_URL_Array.includes(url)) {
-                console.log('already used the story')
+            if (used_Url_Array.includes(url)) {
+                console.log('already used the story');
             } else {
                 article_URL_Array.push(url);
+                used_Url_Array.push(url);
             };
         });
 
-        if (article_Title_Array.length > 50) {
-            let numberOfOldArticles = 30 - article_Title_Array.length;
-            article_Title_Array.splice(0, numberOfOldArticles);
-        }
-
-        console.log(article_URL_Array); 
+        if (used_Url_Array.length > 50) {
+            let numberOfOldArticles = 50 - used_Url_Array.length;
+            used_Url_Array.splice(0, numberOfOldArticles);
+        };
     
         // looping over each URL to scrape
         for (let i = 0; i < article_URL_Array.length; i++) {
@@ -233,7 +233,7 @@ function runTwitterBot() {
             } else {
                 console.log('No additional tweets to send out');
             }
-        }
+        };
     
     }).catch(
         function (error) {
