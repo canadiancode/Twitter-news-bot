@@ -24,7 +24,7 @@ let name = 'Bitcoin';
 let market_cap_change_24H = 27.12123;
 let market_cap = 50000000;
 let ticker = 'BTC';
-let theTweet = '';
+let marketCapTweet = '';
 let previousPosts = [];
 
 // FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT
@@ -233,24 +233,26 @@ function runTwitterBot() {
                     console.log(fetchMarketCapData());
                 }, 16200000);
             } else if (tweetPost === tweet_Array[1]) {
+                fetchMarketCapData();
                 setTimeout(await function() {
                     tweet(tweetPost);
                     console.log(tweetPost);
                 }, 10800000);  // 10800000 = 3 hours // 300000 = 5 minutes
                 // For the market cap tweet
                 setTimeout(await function() {
-                    tweet(fetchMarketCapData());
-                    console.log(fetchMarketCapData());
+                    tweet(marketCapTweet);
+                    console.log(marketCapTweet);
                 }, 16200000);
             } else if (tweetPost === tweet_Array[2]) {
+                fetchMarketCapData();
                 setTimeout(await function() {
                     tweet(tweetPost);
                     console.log(tweetPost);
                 }, 21600000); // 21600000 = 6 hours  // 600000 = 10 minutes
                 // For the market cap tweet
                 setTimeout(await function() {
-                    tweet(tweetPost);
-                    console.log(tweetPost);
+                    tweet(marketCapTweet);
+                    console.log(marketCapTweet);
                 }, 16200000);
             } else {
                 console.log('No additional tweets to send out');
@@ -309,7 +311,7 @@ async function fetchMarketCapData() {
             ];
             
             let fifthStringIdx = Math.round(Math.random() * layerFivePosts.length) - 1;
-            theTweet = layerFivePosts[fifthStringIdx]
+            marketCapTweet = layerFivePosts[fifthStringIdx]
         } else if ((previousPosts[3] === topAssetObject.id) && (previousPosts[2] === topAssetObject.id) && (previousPosts[1] === topAssetObject.id) && (previousPosts[0] === topAssetObject.id)) {
             
             const layerFourPosts = [
@@ -324,7 +326,7 @@ async function fetchMarketCapData() {
             ];
             
             let fourthStringIdx = Math.round(Math.random() * layerFourPosts.length) - 1;
-            theTweet = layerFourPosts[fourthStringIdx];
+            marketCapTweet = layerFourPosts[fourthStringIdx];
         } else if ((previousPosts[2] === topAssetObject.id) && (previousPosts[1] === topAssetObject.id) && (previousPosts[0] === topAssetObject.id)) {
             
             const layerThreePosts = [
@@ -337,7 +339,7 @@ async function fetchMarketCapData() {
             ];
             
             let thirdStringIdx = Math.round(Math.random() * layerThreePosts.length) - 1;
-            theTweet = layerThreePosts[thirdStringIdx];
+            marketCapTweet = layerThreePosts[thirdStringIdx];
         } else if ((previousPosts[1] === topAssetObject.id) && (previousPosts[0] === topAssetObject.id)) {
             
             const layerTwoPosts = [
@@ -355,7 +357,7 @@ async function fetchMarketCapData() {
             ];
             
             let secondStringIdx = Math.round(Math.random() * layerTwoPosts.length) - 1;
-            theTweet = layerTwoPosts[secondStringIdx];
+            marketCapTweet = layerTwoPosts[secondStringIdx];
         } else if ((previousPosts[0] === topAssetObject.id)) {
 
             const layerOnePosts = [
@@ -377,7 +379,7 @@ async function fetchMarketCapData() {
             ];
             
             let firstStringIdx = Math.round(Math.random() * layerOnePosts.length) - 1;
-            theTweet = layerOnePosts[firstStringIdx];
+            marketCapTweet = layerOnePosts[firstStringIdx];
         } else {
             console.log('wuuut..');
         };
@@ -385,8 +387,8 @@ async function fetchMarketCapData() {
     } catch (error) {
         console.error('Error making HTTP request:', error);
     } finally {
-        console.log(theTweet);
-        return theTweet;
+        console.log(marketCapTweet);
+        return marketCapTweet;
     };
 };
 // Filter & find most appreciating asset within a 24H period containing the necessary info
