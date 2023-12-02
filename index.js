@@ -225,13 +225,14 @@ function runTwitterBot() {
         console.log('starting the for loop after summarizing all articles');
         for (const tweetPost of tweet_Array) {
             if (tweetPost === tweet_Array[0]) {
+                fetchMarketCapData();
                 await tweet(tweetPost);
                 console.log(tweetPost);
                 // For the market cap tweet
                 setTimeout(await function() {
-                    tweet(fetchMarketCapData());
-                    console.log(fetchMarketCapData());
-                }, 16200000);
+                    tweet(marketCapTweet);
+                    console.log(marketCapTweet);
+                }, 10800000);
             } else if (tweetPost === tweet_Array[1]) {
                 fetchMarketCapData();
                 setTimeout(await function() {
@@ -242,7 +243,7 @@ function runTwitterBot() {
                 setTimeout(await function() {
                     tweet(marketCapTweet);
                     console.log(marketCapTweet);
-                }, 16200000);
+                }, 21600000);
             } else if (tweetPost === tweet_Array[2]) {
                 fetchMarketCapData();
                 setTimeout(await function() {
@@ -253,7 +254,7 @@ function runTwitterBot() {
                 setTimeout(await function() {
                     tweet(marketCapTweet);
                     console.log(marketCapTweet);
-                }, 16200000);
+                }, 10800000);
             } else {
                 console.log('No additional tweets to send out');
             }
