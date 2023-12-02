@@ -230,8 +230,8 @@ function runTwitterBot() {
                 console.log(tweetPost);
                 // For the market cap tweet
                 setTimeout(await function() {
-                    tweet(marketCapTweet);
-                    console.log(marketCapTweet);
+                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
+                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
                 }, 10800000);
             } else if (tweetPost === tweet_Array[1]) {
                 fetchMarketCapData();
@@ -241,8 +241,8 @@ function runTwitterBot() {
                 }, 10800000);  // 10800000 = 3 hours // 300000 = 5 minutes
                 // For the market cap tweet
                 setTimeout(await function() {
-                    tweet(marketCapTweet);
-                    console.log(marketCapTweet);
+                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
+                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
                 }, 21600000);
             } else if (tweetPost === tweet_Array[2]) {
                 fetchMarketCapData();
@@ -252,8 +252,8 @@ function runTwitterBot() {
                 }, 21600000); // 21600000 = 6 hours  // 600000 = 10 minutes
                 // For the market cap tweet
                 setTimeout(await function() {
-                    tweet(marketCapTweet);
-                    console.log(marketCapTweet);
+                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
+                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
                 }, 10800000);
             } else {
                 console.log('No additional tweets to send out');
@@ -301,13 +301,13 @@ async function fetchMarketCapData() {
             
             const layerFivePosts = [
 
-                `\`🔄 Another look at ${name} ($${ticker}): The market cap has shifted by ${market_cap_change_24H}% in the last 24 hours, currently at $${market_cap}.\``,
+                `\`🔄 Another look at ${name} $${ticker}: The market cap has shifted by ${market_cap_change_24H}% in the last 24 hours, currently at $${market_cap}.\``,
             
-                `\`🔄 Back with more on ${name} ($${ticker}): Observing a ${market_cap_change_24H}% change in market cap in 24 hours, now valued at $${market_cap}.\``,
+                `\`🔄 Back with more on ${name} $${ticker}: Observing a ${market_cap_change_24H}% change in market cap in 24 hours, now valued at $${market_cap}.\``,
                 
-                `\`🔄 Checking in on ${name} ($${ticker}): Market cap has altered by ${market_cap_change_24H}% in 24 hours, now standing at $${market_cap}.\``,
+                `\`🔄 Checking in on ${name} $${ticker}: Market cap has altered by ${market_cap_change_24H}% in 24 hours, now standing at $${market_cap}.\``,
             
-                `\`🔄 Latest from ${name} ($${ticker}): After a ${market_cap_change_24H}% market cap change in 24 hours, the current value is $${market_cap}.\``
+                `\`🔄 Latest from ${name} $${ticker}: After a ${market_cap_change_24H}% market cap change in 24 hours, the current value is $${market_cap}.\``
             
             ];
             
@@ -316,13 +316,13 @@ async function fetchMarketCapData() {
         } else if ((previousPosts[3] === topAssetObject.id) && (previousPosts[2] === topAssetObject.id) && (previousPosts[1] === topAssetObject.id) && (previousPosts[0] === topAssetObject.id)) {
             
             const layerFourPosts = [
-                `\`🔄 Fourth update on ${name} ($${ticker}): Market cap now reads $${market_cap} after a change of ${market_cap_change_24H}% in 24 hours.\``,
+                `\`🔄 Fourth update on ${name} $${ticker}: Market cap now reads $${market_cap} after a change of ${market_cap_change_24H}% in 24 hours.\``,
                 
-                `\`🔄 Post #4 for ${name} ($${ticker}): Witnessing a market cap change of ${market_cap_change_24H}% in 24 hours, now at $${market_cap}.\``,
+                `\`🔄 Post #4 for ${name} $${ticker}: Witnessing a market cap change of ${market_cap_change_24H}% in 24 hours, now at $${market_cap}.\``,
             
-                `\`🔄 Fourth glance at ${name} ($${ticker}): The market cap has altered by ${market_cap_change_24H}% in 24 hours, currently at $${market_cap}.\``,
+                `\`🔄 Fourth glance at ${name} $${ticker}: The market cap has altered by ${market_cap_change_24H}% in 24 hours, currently at $${market_cap}.\``,
             
-                `\`🔄 ${name} ($${ticker})'s fourth market update: A ${market_cap_change_24H}% in 24 hours change in market cap, tallying to $${market_cap}.\``,
+                `\`🔄 ${name} $${ticker}'s fourth market update: A ${market_cap_change_24H}% in 24 hours change in market cap, tallying to $${market_cap}.\``,
             
             ];
             
@@ -331,11 +331,11 @@ async function fetchMarketCapData() {
         } else if ((previousPosts[2] === topAssetObject.id) && (previousPosts[1] === topAssetObject.id) && (previousPosts[0] === topAssetObject.id)) {
             
             const layerThreePosts = [
-                `\`📊 Checking in on ${name} ($${ticker}) for the third time. Its market cap has experienced a change, now standing at $${market_cap} following a ${market_cap_change_24H}% shift in 24 hours.\``,
+                `\`📊 Checking in on ${name} $${ticker} for the third time. Its market cap has experienced a change, now standing at $${market_cap} following a ${market_cap_change_24H}% shift in 24 hours.\``,
             
-                `\`🔄 Latest on ${name} ($${ticker}): Market cap adjustment of ${market_cap_change_24H}% in 24 hours, bringing the total to $${market_cap}.\``,
+                `\`🔄 Latest on ${name} $${ticker}: Market cap adjustment of ${market_cap_change_24H}% in 24 hours, bringing the total to $${market_cap}.\``,
             
-                `\`🔄 Update #3 for ${name} ($${ticker}): Market capitalization has moved by ${market_cap_change_24H}% in 24 hours, reaching $${market_cap}.\``,
+                `\`🔄 Update #3 for ${name} $${ticker}: Market capitalization has moved by ${market_cap_change_24H}% in 24 hours, reaching $${market_cap}.\``,
             
             ];
             
@@ -344,17 +344,17 @@ async function fetchMarketCapData() {
         } else if ((previousPosts[1] === topAssetObject.id) && (previousPosts[0] === topAssetObject.id)) {
             
             const layerTwoPosts = [
-                `\`🔁 Revisiting ${name} ($${ticker}) for a second time: The market cap has shifted to $${market_cap}, following a change of ${market_cap_change_24H}% in 24 hours.\``,
+                `\`🔁 Revisiting ${name} $${ticker} for a second time: The market cap has shifted to $${market_cap}, following a change of ${market_cap_change_24H}% in 24 hours.\``,
             
-                `\`🔄 Second update on ${name} ($${ticker}): Current market cap is $${market_cap} after experiencing a ${market_cap_change_24H}% change.\``,
+                `\`🔄 Second update on ${name} $${ticker}: Current market cap is $${market_cap} after experiencing a ${market_cap_change_24H}% change.\``,
             
-                `\`🔄 Checking back on ${name} ($${ticker}) for a second time: Market capitalization now stands at $${market_cap}, altered by ${market_cap_change_24H}% in 24 hours.\``,
+                `\`🔄 Checking back on ${name} $${ticker} for a second time: Market capitalization now stands at $${market_cap}, altered by ${market_cap_change_24H}% in 24 hours.\``,
             
-                `\`🔄 A second look at ${name} ($${ticker}): With a ${market_cap_change_24H}% adjustment in 24 hours, the market cap has reached $${market_cap}.\``,
+                `\`🔄 A second look at ${name} $${ticker}: With a ${market_cap_change_24H}% adjustment in 24 hours, the market cap has reached $${market_cap}.\``,
             
-                `\`🔄 Second glance: ${name} ($${ticker})'s market cap now reads $${market_cap}, posting a ${market_cap_change_24H}% shift in 24 hours\``,
+                `\`🔄 Second glance: ${name} $${ticker}'s market cap now reads $${market_cap}, posting a ${market_cap_change_24H}% shift in 24 hours\``,
                 
-                `\`🔄 ${name} ($${ticker}) second market update: The market cap value is currently $${market_cap}, after a change of ${market_cap_change_24H}% in 24 hours\``,
+                `\`🔄 ${name} $${ticker} second market update: The market cap value is currently $${market_cap}, after a change of ${market_cap_change_24H}% in 24 hours\``,
             ];
             
             let secondStringIdx = Math.round(Math.random() * layerTwoPosts.length) - 1;
@@ -363,19 +363,19 @@ async function fetchMarketCapData() {
 
             const layerOnePosts = [
 
-                `\`📈 The market cap of ${name} ($${ticker}) is up ${market_cap_change_24H}%, bringing the current value to $${market_cap}.\``,
+                `\`📈 The market cap of ${name} $${ticker} is up ${market_cap_change_24H}%, bringing the current value to $${market_cap}.\``,
             
                 `\`🌟 As of today, ${name} (symbol: $${ticker}) has seen a ${market_cap_change_24H}% change in market cap over the last 24 hours, now standing at $${market_cap}.\``,
             
-                `\`💹 ${name}'s ($${ticker}) market capitalization has adjusted by ${market_cap_change_24H}% in the past day, reaching a value of $${market_cap}.\``,
+                `\`💹 ${name}'s $${ticker} market capitalization has adjusted by ${market_cap_change_24H}% in the past day, reaching a value of $${market_cap}.\``,
             
-                `\`📊 In recent market activity, ${name} ($${ticker}) experienced a ${market_cap_change_24H}% shift in its market cap in 24 hours, which is currently $${market_cap}.\``,
+                `\`📊 In recent market activity, ${name} $${ticker} experienced a ${market_cap_change_24H}% shift in its market cap in 24 hours, which is currently $${market_cap}.\``,
             
-                `\`💰 The latest update shows a ${market_cap_change_24H}% variation in the market cap of ${name} ($${ticker}), now valued at $${market_cap}. in 24 hours\``,
+                `\`💰 The latest update shows a ${market_cap_change_24H}% variation in the market cap of ${name} $${ticker}, now valued at $${market_cap}. in 24 hours\``,
             
-                `\`🔼 Trending now: ${name} ($${ticker}) with a ${market_cap_change_24H}% movement in market cap in 24 hours, which is presently at $${market_cap}.\``,
+                `\`🔼 Trending now: ${name} $${ticker} with a ${market_cap_change_24H}% movement in market cap in 24 hours, which is presently at $${market_cap}.\``,
             
-                `\`📉 Market update: The cap of ${name} ($${ticker}) changed by ${market_cap_change_24H}% in 24 hours, bringing its current market valuation to $${market_cap}.\``
+                `\`📉 Market update: The cap of ${name} $${ticker} changed by ${market_cap_change_24H}% in 24 hours, bringing its current market valuation to $${market_cap}.\``
             
             ];
             
