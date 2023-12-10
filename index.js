@@ -360,7 +360,7 @@ async function fetchMarketCapData() {
         const tweetTemplates = [
             `\`📈 The market cap of ${name} $${ticker} is up ${market_cap_change_24H}%, bringing the current value to $${market_cap}.\``,
         
-            `\`🌟 As of today, ${name} (symbol: $${ticker}) has seen a ${market_cap_change_24H}% change in market cap over the last 24 hours, now standing at $${market_cap}.\``,
+            `\`🌟 As of today, ${name} $${ticker} has seen a ${market_cap_change_24H}% change in market cap over the last 24 hours, now standing at $${market_cap}.\``,
         
             `\`📊 ${name}'s $${ticker} market capitalization has adjusted by ${market_cap_change_24H}% in the past day, reaching a value of $${market_cap}.\``,
         
@@ -370,8 +370,6 @@ async function fetchMarketCapData() {
         
             `\`🔼 Trending now: ${name} $${ticker} with a ${market_cap_change_24H}% movement in market cap in 24 hours, which is presently at $${market_cap}.\``,
         
-            `\`👀 Market update: The cap of ${name} $${ticker} changed by ${market_cap_change_24H}% in 24 hours, bringing its current market valuation to $${market_cap}.\``,
-
             `\`👀 Market update: The cap of ${name} $${ticker} changed by ${market_cap_change_24H}% in 24 hours, bringing its current market valuation to $${market_cap}.\``,
 
             `\`🔔 The market cap of ${name} $${ticker} has shifted by ${market_cap_change_24H}% in the last 24 hours, now totaling $${market_cap}.\``,
@@ -384,11 +382,11 @@ async function fetchMarketCapData() {
 
             `\`📋 Market update: ${name} $${ticker} has undergone a ${market_cap_change_24H}% change in market cap, now valued at $${market_cap}, over the last 24 hours.\``,
 
-            `\`🌟 Big moves! ${name} ($${ticker})'s market cap just jumped ${market_cap_change_24H}%, hitting $${market_cap}. Something's brewing!\``,
+            `\`🌟 Big moves! ${name} $${ticker} market cap just jumped ${market_cap_change_24H}%, hitting $${market_cap}. Something's brewing!\``,
 
-            `\`🔔 Market alert! ${name} ($${ticker}) is shaking things up with a ${market_cap_change_24H}% change in market cap. Current value: $${market_cap}.\``,
+            `\`🔔 Market alert! ${name} $${ticker} is shaking things up with a ${market_cap_change_24H}% change in market cap. Current value: $${market_cap}.\``,
 
-            `\`👀 Something to watch: ${name} ($${ticker})'s market cap soared ${market_cap_change_24H}%, now at $${market_cap}.\``
+            `\`👀 Something to watch: ${name} $${ticker} market cap soared ${market_cap_change_24H}%, now at $${market_cap}.\``
         ];
 
         let randomIndex = Math.round(Math.random() * tweetTemplates.length) - 1;
