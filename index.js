@@ -240,13 +240,13 @@ function runTwitterBot() {
                 // For the second market cap tweet
                 setTimeout(await function() {
                     fetchMarketCapData();
-                }, 3500000); // 3500000 = 0.97 hours
+                }, 20952000); // 20952000 = 5.97 hours
 
                 // For the second market cap tweet
                 setTimeout(await function() {
                     tweet(marketCapTweet.replace(/^`|`$/g, ''));
                     console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 3600000); // 3600000 = 1 hour
+                }, 21600000); // 21600000 = 6 hour
 
             } else if (tweetPost === tweet_Array[1]) {
 
@@ -264,13 +264,13 @@ function runTwitterBot() {
                 // For the second market cap tweet
                 setTimeout(await function() {
                     fetchMarketCapData();
-                }, 3500000); // 3500000 = 0.97 hours
+                }, 20952000); // 20952000 = 5.97 hours
 
                 // For the second market cap tweet
                 setTimeout(await function() {
                     tweet(marketCapTweet.replace(/^`|`$/g, ''));
                     console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 3600000); // 3600000 = 1 hour
+                }, 21600000); // 21600000 = 6 hour
 
             } else if (tweetPost === tweet_Array[2]) {
 
@@ -288,13 +288,13 @@ function runTwitterBot() {
                 // For the second market cap tweet
                 setTimeout(await function() {
                     fetchMarketCapData();
-                }, 3500000); // 3500000 = 0.97 hours
+                }, 20952000); // 20952000 = 5.97 hours
 
                 // For the second market cap tweet
                 setTimeout(await function() {
                     tweet(marketCapTweet.replace(/^`|`$/g, ''));
                     console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 3600000); // 3600000 = 1 hour
+                }, 21600000); // 21600000 = 6 hour
 
             } else {
                 console.log('No additional tweets to send out');
@@ -310,13 +310,13 @@ function runTwitterBot() {
                 // For the second market cap tweet
                 setTimeout(await function() {
                     fetchMarketCapData();
-                }, 3500000); // 3500000 = 0.97 hours
+                }, 20952000); // 20952000 = 5.97 hours
 
                 // For the second market cap tweet
                 setTimeout(await function() {
                     tweet(marketCapTweet.replace(/^`|`$/g, ''));
                     console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 3600000); // 3600000 = 1 hour
+                }, 21600000); // 21600000 = 6 hour
 
             };
         };
