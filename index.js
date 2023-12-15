@@ -25,7 +25,6 @@ let market_cap_change_24H = 27.12123;
 let market_cap = 50000000;
 let ticker = 'BTC';
 let marketCapTweet = '';
-let previousPosts = [];
 
 // FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT
 
@@ -240,13 +239,13 @@ function runTwitterBot() {
                 // For the second market cap tweet
                 setTimeout(await function() {
                     fetchMarketCapData();
-                }, 20952000); // 20952000 = 5.97 hours
+                }, 43000000); // 43000000 = 11.97 hours
 
                 // For the second market cap tweet
                 setTimeout(await function() {
                     tweet(marketCapTweet.replace(/^`|`$/g, ''));
                     console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 21600000); // 21600000 = 6 hour
+                }, 43200000); // 43200000 = 6 hour
 
             } else if (tweetPost === tweet_Array[1]) {
 
@@ -264,13 +263,13 @@ function runTwitterBot() {
                 // For the second market cap tweet
                 setTimeout(await function() {
                     fetchMarketCapData();
-                }, 20952000); // 20952000 = 5.97 hours
+                }, 43000000); // 43000000 = 11.97 hours
 
                 // For the second market cap tweet
                 setTimeout(await function() {
                     tweet(marketCapTweet.replace(/^`|`$/g, ''));
                     console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 21600000); // 21600000 = 6 hour
+                }, 43200000); // 43200000 = 12 hour
 
             } else if (tweetPost === tweet_Array[2]) {
 
@@ -288,13 +287,13 @@ function runTwitterBot() {
                 // For the second market cap tweet
                 setTimeout(await function() {
                     fetchMarketCapData();
-                }, 20952000); // 20952000 = 5.97 hours
+                }, 43000000); // 43000000 = 11.97 hours
 
                 // For the second market cap tweet
                 setTimeout(await function() {
                     tweet(marketCapTweet.replace(/^`|`$/g, ''));
                     console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 21600000); // 21600000 = 6 hour
+                }, 43200000); // 43200000 = 12 hour
 
             } else {
                 console.log('No additional tweets to send out');
@@ -310,13 +309,13 @@ function runTwitterBot() {
                 // For the second market cap tweet
                 setTimeout(await function() {
                     fetchMarketCapData();
-                }, 20952000); // 20952000 = 5.97 hours
+                }, 43000000); // 43000000 = 11.97 hours
 
                 // For the second market cap tweet
                 setTimeout(await function() {
                     tweet(marketCapTweet.replace(/^`|`$/g, ''));
                     console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 21600000); // 21600000 = 6 hour
+                }, 43200000); // 43200000 = 12 hour
 
             };
         };
@@ -328,7 +327,7 @@ function runTwitterBot() {
     });
 
 };
-// runTwitterBot();
+runTwitterBot();
 
 // FETCH MARKET CAP DATA FROM COINGECKO
 async function fetchMarketCapData() {
@@ -339,14 +338,6 @@ async function fetchMarketCapData() {
         // Send axios request to fetch data:
         const response = await axios.get(priceDataEndpoint);
         const topAssetObject = await findMaxPriceChange(response.data);
-
-        // Add to the previous posts:
-        if (previousPosts.length < 2) {
-            previousPosts.push(topAssetObject.id);
-        } else {
-            previousPosts.shift(); 
-            previousPosts.push(topAssetObject.id); 
-        };
 
         // Change values for the top asset:
         name = topAssetObject.name;
@@ -398,7 +389,7 @@ async function fetchMarketCapData() {
         return marketCapTweet;
     };
 };
-fetchMarketCapData();
+// fetchMarketCapData();
 // Filter & find most appreciating asset within a 24H period containing the necessary info
 function findMaxPriceChange(dataArray) {
     if (!dataArray || dataArray.length === 0) {
