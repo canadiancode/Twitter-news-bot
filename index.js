@@ -327,7 +327,6 @@ function runTwitterBot() {
     });
 
 };
-runTwitterBot();
 
 // FETCH MARKET CAP DATA FROM COINGECKO
 async function fetchMarketCapData() {
