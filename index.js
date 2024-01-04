@@ -7,7 +7,6 @@
     // node-cron:          CronJob is for scheduling the code to automatically run
     // path:               set the cache path for Heroku
 
-
 // Require dotenv to import API keys and run .config to load the API keys into the index.js file 
 require('dotenv').config();
 
@@ -26,7 +25,9 @@ let market_cap = 50000000;
 let ticker = 'BTC';
 let marketCapTweet = '';
 
-// FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT -- FUNTION TO SCRAPE ARTICLE CONTENT //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const puppeteer = require('puppeteer');
 
@@ -82,7 +83,9 @@ async function scrapeArticle(url) {
     };
 };
 
-// SUMMERIZE WITH OPENAI -- SUMMERIZE WITH OPENAI -- SUMMERIZE WITH OPENAI
+/////////////////////////////////////////////////////////////////////////////
+// SUMMERIZE WITH OPENAI -- SUMMERIZE WITH OPENAI -- SUMMERIZE WITH OPENAI //
+/////////////////////////////////////////////////////////////////////////////
 
 // 2 imports from the OpenAI package
     // Configuration = object for defining things like API
@@ -136,7 +139,9 @@ async function summarizeArticle(scrapedArticle) {
     };
 };
 
-// POST ON TWITTER -- POST ON TWITTER -- POST ON TWITTER
+///////////////////////////////////////////////////////////
+// POST ON TWITTER -- POST ON TWITTER -- POST ON TWITTER //
+///////////////////////////////////////////////////////////
 
 const { TwitterApi } = require('twitter-api-v2');
 
@@ -150,14 +155,18 @@ const twitterClient = client.readWrite;
 
 async function tweet(tweetContent) {
     try {
-        console.log('tweeting!')
+        console.log('tweeting!');
         await twitterClient.v2.tweet(`${tweetContent}`);
     } catch (error) {
         console.log(error);
     }
 };
 
-// APP WORKFLOW START --  APP WORKFLOW START  -- APP WORKFLOW START
+////////////////////////////////////////////////////////////////////////////////
+// APP WORKFLOW FOR EACH TYPE OF TWEET -- APP WORKFLOW FOR EACH TYPE OF TWEET //
+////////////////////////////////////////////////////////////////////////////////
+
+// Twitter Bot //
 
 // require axios to be used for the HTTPS request and puppeteer for scraping data
 const axios = require("axios");
@@ -175,10 +184,7 @@ const options = {
   }
 };
 
-// running this function using CronJob
-
 // retrieve the URL's from Rapid API
-
 function runTwitterBot() {
 
     axios.request(options).then(
@@ -224,99 +230,13 @@ function runTwitterBot() {
         console.log('starting the for loop after summarizing all articles');
         for (const tweetPost of tweet_Array) {
             if (tweetPost === tweet_Array[0]) {
-                
-                await fetchMarketCapData();
-
                 await tweet(tweetPost);
-                console.log(tweetPost);
-
-                // For the first market cap tweet
-                setTimeout(await function() {
-                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
-                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 60000); // 60000 = 1 minute
-
-                // For the second market cap tweet
-                setTimeout(await function() {
-                    fetchMarketCapData();
-                }, 43000000); // 43000000 = 11.97 hours
-
-                // For the second market cap tweet
-                setTimeout(await function() {
-                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
-                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 43200000); // 43200000 = 6 hour
-
             } else if (tweetPost === tweet_Array[1]) {
-
-                await fetchMarketCapData();
-
                 await tweet(tweetPost);
-                console.log(tweetPost);
-
-                // For the first market cap tweet
-                setTimeout(await function() {
-                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
-                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 60000); // 60000 = 1 minute
-
-                // For the second market cap tweet
-                setTimeout(await function() {
-                    fetchMarketCapData();
-                }, 43000000); // 43000000 = 11.97 hours
-
-                // For the second market cap tweet
-                setTimeout(await function() {
-                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
-                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 43200000); // 43200000 = 12 hour
-
             } else if (tweetPost === tweet_Array[2]) {
-
-                await fetchMarketCapData();
-
                 await tweet(tweetPost);
-                console.log(tweetPost);
-
-                // For the first market cap tweet
-                setTimeout(await function() {
-                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
-                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 60000); // 60000 = 1 minute
-
-                // For the second market cap tweet
-                setTimeout(await function() {
-                    fetchMarketCapData();
-                }, 43000000); // 43000000 = 11.97 hours
-
-                // For the second market cap tweet
-                setTimeout(await function() {
-                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
-                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 43200000); // 43200000 = 12 hour
-
             } else {
                 console.log('No additional tweets to send out');
-
-                await fetchMarketCapData();
-
-                // For the first market cap tweet
-                setTimeout(await function() {
-                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
-                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 60000); // 60000 = 1 minute
-
-                // For the second market cap tweet
-                setTimeout(await function() {
-                    fetchMarketCapData();
-                }, 43000000); // 43000000 = 11.97 hours
-
-                // For the second market cap tweet
-                setTimeout(await function() {
-                    tweet(marketCapTweet.replace(/^`|`$/g, ''));
-                    console.log(marketCapTweet.replace(/^`|`$/g, ''));
-                }, 43200000); // 43200000 = 12 hour
-
             };
         };
     
@@ -327,9 +247,8 @@ function runTwitterBot() {
     });
 
 };
-runTwitterBot();
 
-// FETCH MARKET CAP DATA FROM COINGECKO
+// Small-Cap Market Capitalization Change //
 async function fetchMarketCapData() {
     
     const priceDataEndpoint = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=500&page=1&sparkline=false&price_change_percentage=24h&locale=en';
@@ -382,14 +301,14 @@ async function fetchMarketCapData() {
 
         let randomIndex = Math.round(Math.random() * tweetTemplates.length) - 1;
         marketCapTweet = tweetTemplates[randomIndex];
+        
+        // Send the tweet to Twitter
+        tweet(marketCapTweet.replace(/^`|`$/g, ''));
+
     } catch (error) {
         console.error('Error making HTTP request:', error);
-    } finally {
-        console.log(marketCapTweet);
-        return marketCapTweet;
     };
 };
-// fetchMarketCapData();
 // Filter & find most appreciating asset within a 24H period containing the necessary info
 function findMaxPriceChange(dataArray) {
     if (!dataArray || dataArray.length === 0) {
@@ -404,18 +323,65 @@ function findMaxPriceChange(dataArray) {
     return maxChangeObject;
 };
 
-// SCHEDULE THE CRONJOB
+// GOOD MORNING TWEETS //
+let gmTweets = ['Gm', 'Gmᵍᵐ', 'Grand rising my frens', 'GM to all my $sol soldiers', 'GM to everyone but $eth maxis', 'Gm: get money.', 'Gm - another day on a floating rock.', 'GM (with rizz)', 'gm: it is a lifestyle!🌞', 'GM Frens🥳', 'GM: say it back😡', 'gm, go touch grass (with haste)', 'Gm to everyone except @PeterSchiff', 'GM - Daily reminder that $BTC and #Crypto are not the same.', 'GM: remember to affirm that you are not exit liquidity today.', 'GM: say it back (please)🥺', 'gm degens, what we buyin today❓', 'Gm.. any #airdrops that I should know about?🪂', 'Gooooooooooooooooooooooooooood morning', 'Goooooooooooood morning', 'Gooooooood morning', 'Goood morning', 'Gooooooooood morning'];
+function gmTweet() {
+    // get random tweet
+    let randomIndex = Math.round(Math.random() * gmTweets.length) - 1;
+    let selectedGmTweet = gmTweets[randomIndex];
+    console.log(selectedGmTweet)
+    // tweet the content
+    tweet(selectedGmTweet);
+};
+
+// GOOD NIGHT TWEETS //
+let gnTweets = ['GN', 'GN to all my $sol soldiers', 'GN to everyone but $eth maxis', 'GN i pray for no liquidation email', 'Goodnight cryptocurrency enthusiasts', 'GN everyone except Gary Gensler', 'GN i hope you experience the cool side of the pillow tn', 'GN dont let bed bugs bite', 'Sweet dreams my fellow degens', 'GN: dont forget $sol will flip $eth'];
+function gnTweet() {
+    // get random tweet
+    let randomIndex = Math.round(Math.random() * gnTweets.length) - 1;
+    let selectedGnTweet = gnTweets[randomIndex];
+    console.log(selectedGnTweet)
+    // tweet the content
+    tweet(selectedGnTweet);
+};
+
+//////////////////////////
+// SCHEDULE THE CRONJOB //
+//////////////////////////
+
 const cron = require('node-cron');
 
-// Schedule the task to run at 6 am PST every day
-const scheduledTask = cron.schedule('0 6 * * *', runTwitterBot, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles',
+// '0 6,12 * * *'
+    // 0 = minutes
+    // 6,12 = should run at 6am and 12pm
+    // * = The day of the month when the task should run. The asterisk * means every day of the month.
+    // * = he month when the task should run. The asterisk * here means every month.
+    // * = The day of the week when the task should run
+
+// Crypto News //
+const scheduledNewsTweets = cron.schedule('0 6,12 * * *', runTwitterBot, {
+    scheduled: true,
+    timezone: 'America/Los_Angeles',
 });
+scheduledNewsTweets.start();
 
-// Start the scheduled task
-scheduledTask.start();
+// Market Cap Data //
+const scheduledMarketCapTweets = cron.schedule('0 8,10,14 * * *', fetchMarketCapData, {
+    scheduled: true,
+    timezone: 'America/Los_Angeles',
+});
+scheduledMarketCapTweets.start();
 
+// Good morning //
+const scheduledGmTweets = cron.schedule('0 7 * * *', gmTweet, {
+    scheduled: true,
+    timezone: 'America/Los_Angeles',
+});
+scheduledGmTweets.start();
 
-// Keep the process running with an empty asynchronous function
-// (async () => {})();
+// Good night //
+const scheduledGnTweets = cron.schedule('0 20 * * *', gnTweet, {
+    scheduled: true,
+    timezone: 'America/Los_Angeles',
+});
+scheduledGnTweets.start();
