@@ -366,7 +366,7 @@ const scheduledNewsTweets = cron.schedule('0 6,12 * * *', runTwitterBot, {
 scheduledNewsTweets.start();
 
 // Market Cap Data //
-const scheduledMarketCapTweets = cron.schedule('0 8,10,14 * * *', fetchMarketCapData, {
+const scheduledMarketCapTweets = cron.schedule('0 8,14,19 * * *', fetchMarketCapData, {
     scheduled: true,
     timezone: 'America/Los_Angeles',
 });
@@ -380,7 +380,7 @@ const scheduledGmTweets = cron.schedule('0 7 * * *', gmTweet, {
 scheduledGmTweets.start();
 
 // Good night //
-const scheduledGnTweets = cron.schedule('0 20 * * *', gnTweet, {
+const scheduledGnTweets = cron.schedule('0 1 * * *', gnTweet, {
     scheduled: true,
     timezone: 'America/Los_Angeles',
 });
