@@ -46,10 +46,12 @@ async function scrapeArticle(url) {
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
+            '--no-zygote',
+            '--single-process',
             `--disk-cache-dir=${cacheDir}`
             ],
             executablePath: process.env.GOOGLE_CHROME_BIN || '',
-            headless: false
+            headless: true
     });
 
     try {
