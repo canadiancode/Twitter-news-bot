@@ -237,23 +237,22 @@ function runTwitterBot() {
                 console.log('Could not scrape the site..');
             };
         };
+
+        console.log('starting the for loop after summarizing all articles');
     
         // looping over articles for OpenAI to summarize 
         for (const article of article_Content_Array) {
             await summarizeArticle(article);
         };
-    
-        // posting the tweets made fro OpenAI
-        console.log('starting the for loop after summarizing all articles');
 
         // Trigger the tweets
         for (const tweetPost of tweet_Array) {
             if (tweetPost === tweet_Array[0]) {
                 await tweet(tweetPost.replace(/['"]/g, ''));
             } else if (tweetPost === tweet_Array[1]) {
-                setTimeout(await tweet(tweetPost.replace(/['"]/g, '')), 3600000) // 1 hour delay
+                setTimeout(() => tweet(tweetPost.replace(/['"]/g, '')), 3600000); // Correct usage for 1 hour delay
             } else if (tweetPost === tweet_Array[2]) {
-                setTimeout(await tweet(tweetPost.replace(/['"]/g, '')), 7200000) // 2 hour delay
+                setTimeout(() => tweet(tweetPost.replace(/['"]/g, '')), 7200000); // Correct usage for 2 hour delay
             } else {
                 console.log('No additional tweets to send out');
             };
@@ -264,7 +263,6 @@ function runTwitterBot() {
         console.error(error);
         console.log('Could not tweet articles...');
     });
-
 };
 runTwitterBot();
 
