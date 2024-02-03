@@ -37,26 +37,32 @@ const path = require('path');
 // function to scrape paragraph elements from URL
 async function scrapeArticle(url) {
 
+    // Set the cache directory within the writable /tmp directory
+    const cacheDir = path.join(__dirname, '/tmp/cache/puppeteer');
+
+    // set up the browser and navigate to URL
+    const browser = await puppeteer.launch({
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            `--disk-cache-dir=${cacheDir}`
+            ],
+            executablePath: process.env.GOOGLE_CHROME_BIN || '',
+            headless: false
+    });
+
     try {
 
-        // Set the cache directory within the writable /tmp directory
-        const cacheDir = path.join(__dirname, '/tmp/cache/puppeteer');
-
-        // set up the browser and navigate to URL
-        const browser = await puppeteer.launch({
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--single-process',
-                '--no-zygote',
-                `--disk-cache-dir=${cacheDir}`
-              ],
-              executablePath: process.env.GOOGLE_CHROME_BIN || '',
-              headless: true
-        });
         const page = await browser.newPage();
         await page.goto(url);
+
+        // Wait 5 seconds, and scroll down
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
+        // Wait a bit for any lazy-loaded content to load
+        await new Promise(resolve => setTimeout(resolve, 5000));
 
         // select all the elements with the class of .at-text (Two Dollar Signs allows to fetch all elements, whereas one Dollar sign is the first element in the DOM)
         const paragraphElements = await page.$$('.at-text');
@@ -73,12 +79,15 @@ async function scrapeArticle(url) {
         let formattedArticle = articleContent.join(' ');
         article_Content_Array.push(formattedArticle);
 
+        console.log('The formatted article is: ', formattedArticle);
+
         await browser.close();
 
-        console.log('scraped the site!')
+        console.log('scraped the site!');
 
     } catch(error) {
         console.log(error);
+        await browser.close();
         console.log('Could not scrape the site...')
     };
 };
@@ -107,6 +116,8 @@ const callToAction = ['\n\nFollow for more real time news ❤️', '\n\nShow sup
 
 async function summarizeArticle(scrapedArticle) {
 
+    console.log('The article to summarize is: ', scrapedArticle);
+
     try {
 
         const prompt = `Compose a viral-worthy tweet between 120-130 characters summarizing the article below. Include two relevant hashtags at the end. Ensure the tweet, including spaces, punctuation, and hashtags, stays within the specified character range of 120-130 characters:
@@ -115,7 +126,7 @@ async function summarizeArticle(scrapedArticle) {
     
         // find the different models here: https://platform.openai.com/docs/models
         const response = await openai.createCompletion({
-            model: 'text-davinci-003',
+            model: 'gpt-3.5-turbo-instruct',
             prompt: prompt,
             max_tokens: 100,
             temperature: 0
@@ -203,6 +214,7 @@ function runTwitterBot() {
             let url = data.url;
             article_Title_Array.push(title);
 
+            // Check if we've already posted about this
             if (used_Url_Array.includes(url)) {
                 console.log(`Already used the story: ${url}`);
             } else {
@@ -211,6 +223,7 @@ function runTwitterBot() {
             };
         });
 
+        // Remove old articles that we've posted above to save on storage
         if (used_Url_Array.length > 50) {
             let numberOfOldArticles = 50 - used_Url_Array.length;
             used_Url_Array.splice(0, numberOfOldArticles);
@@ -218,7 +231,11 @@ function runTwitterBot() {
     
         // looping over each URL to scrape
         for (let i = 0; i < article_URL_Array.length; i++) {
-            await scrapeArticle(article_URL_Array[i]);
+            try {
+                await scrapeArticle(article_URL_Array[i]);
+            } catch (error) {
+                console.log('Could not scrape the site..');
+            };
         };
     
         // looping over articles for OpenAI to summarize 
@@ -228,13 +245,15 @@ function runTwitterBot() {
     
         // posting the tweets made fro OpenAI
         console.log('starting the for loop after summarizing all articles');
+
+        // Trigger the tweets
         for (const tweetPost of tweet_Array) {
             if (tweetPost === tweet_Array[0]) {
-                await tweet(tweetPost);
+                await tweet(tweetPost.replace(/['"]/g, ''));
             } else if (tweetPost === tweet_Array[1]) {
-                await tweet(tweetPost);
+                setTimeout(await tweet(tweetPost.replace(/['"]/g, '')), 3600000) // 1 hour delay
             } else if (tweetPost === tweet_Array[2]) {
-                await tweet(tweetPost);
+                setTimeout(await tweet(tweetPost.replace(/['"]/g, '')), 7200000) // 2 hour delay
             } else {
                 console.log('No additional tweets to send out');
             };
@@ -247,6 +266,7 @@ function runTwitterBot() {
     });
 
 };
+runTwitterBot();
 
 // Small-Cap Market Capitalization Change //
 async function fetchMarketCapData() {
