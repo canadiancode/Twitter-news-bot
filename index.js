@@ -266,7 +266,7 @@ function runTwitterBot() {
         console.log('Could not tweet articles...');
     });
 };
-runTwitterBot();
+// runTwitterBot();
 
 // Small-Cap Market Capitalization Change //
 async function fetchMarketCapData() {
