@@ -344,7 +344,45 @@ function findMaxPriceChange(dataArray) {
 };
 
 // GOOD MORNING TWEETS //
-let gmTweets = ['Gm', 'Gmᵍᵐ', 'Grand rising my frens', 'GM to all my $sol soldiers', 'GM to everyone but $eth maxis', 'Gm: get money.', 'Gm - another day on a floating rock.', 'GM (with rizz)', 'gm: it is a lifestyle!🌞', 'GM Frens🥳', 'GM: say it back😡', 'gm, go touch grass (with haste)', 'Gm to everyone except @PeterSchiff', 'GM - Daily reminder that $BTC and #Crypto are not the same.', 'GM: remember to affirm that you are not exit liquidity today.', 'GM: say it back (please)🥺', 'gm degens, what we buyin today❓', 'Gm.. any #airdrops that I should know about?🪂', 'Gooooooooooooooooooooooooooood morning', 'Goooooooooooood morning', 'Gooooooood morning', 'Goood morning', 'Gooooooooood morning'];
+let gmTweets = [
+    'Gm',
+    'gmgmᵍᵐ',
+    'Gmᵍᵐ',
+    'Grand rising my frens',
+    'GM to all my $sol soldiers',
+    'GM to everyone but $eth maxis',
+    'Gm: get money.',
+    'Gm - another day on a floating rock.',
+    'GM (with rizz)',
+    'gm: it is a lifestyle!🌞',
+    'GM Frens🥳',
+    'GM: say it back😡',
+    'gm, go touch grass (with haste)',
+    'Gm to everyone except @PeterSchiff',
+    'GM - Daily reminder that $BTC and #Crypto are not the same.',
+    'GM: remember to affirm that you are not exit liquidity today.',
+    'GM: say it back (please)🥺',
+    'gm degens, what we buyin today❓',
+    'Gm.. any #airdrops that I should know about?🪂',
+    'slept four hours, what are we buying fam?',
+    'Gooooooooooooooooooooooooooood morning',
+    'Goooooooooooooooooooooooood morning',
+    'Gooooooooooooooooooooood morning',
+    'Gooooooooooooooooooood morning',
+    'Goooooooooooooooood morning',
+    'Goooooooooood morning',
+    'Goooooood morning',
+    'Gooood morning',
+    'Gm - lets crush it.',
+    'Gm: do something your future will thank you for',
+    'Gm, touch grass.',
+    'gm 𝕏 fam',
+    'Gm, may you be blessed with no liquidations',
+    'AHHHHHH im going to GMMMMMM',
+    'Profession: saying GM on X',
+    'Gm. get after it.',
+    'GM. You have a mission. Get to work.'
+];  
 function gmTweet() {
     // get random tweet
     let randomIndex = Math.round(Math.random() * gmTweets.length) - 1;
@@ -355,7 +393,26 @@ function gmTweet() {
 };
 
 // GOOD NIGHT TWEETS //
-let gnTweets = ['GN', 'GN to all my $sol soldiers', 'GN to everyone but $eth maxis', 'GN i pray for no liquidation email', 'Goodnight cryptocurrency enthusiasts', 'GN everyone except Gary Gensler', 'GN i hope you experience the cool side of the pillow tn', 'GN dont let bed bugs bite', 'Sweet dreams my fellow degens', 'GN: dont forget $sol will flip $eth'];
+let gnTweets = [
+    'GN🌝',
+    'GN to all my $sol soldiers⚡',
+    'GN to everyone but $eth maxis',
+    'GN i pray for no liquidation email🥶',
+    'Goodnight cryptocurrency enthusiasts⚡',
+    'GN everyone except @GaryGensler 👿',
+    'GN i hope you experience the cool side of the pillow tn🥶',
+    'GN don’t let bed bugs bite🦋',
+    'Sweet dreams my fellow degens',
+    'GN: don’t forget $sol will flip $eth 🤓',
+    'sleep tight online frens🚀',
+    'time to teleport 8 hours, gn❤️',
+    'may we wake up to a pump, gn📈',
+    'Get your eight hours tn, gn.',
+    'GN time to battle my sleep demons👺',
+    'GN, may the pump be with you🥰',
+    'Life is good when you’re excited to wake up. GN fam🥰',
+    'GN: see yall in six hours'
+];  
 function gnTweet() {
     // get random tweet
     let randomIndex = Math.round(Math.random() * gnTweets.length) - 1;
@@ -364,6 +421,50 @@ function gnTweet() {
     // tweet the content
     tweet(selectedGnTweet);
 };
+
+// QUOTES & SHIT TWEETS //
+const quotesTweets = [
+    `$BTC and #Crypto are not the same. Never have been. Never will be`,
+    `#BTC exists to shelter you from inflation. Crypto exists to enrich founders.`,
+    `What is comfortable is rarely profitable.`,
+    `Optimism and altruism go hand in hand.`,
+    `Invest now. Investigate later. Wisdom from @georgesoros`,
+    `You have to be comfortable losing before you can win`,
+    `Long until wrong > shorting til right`,
+    `Bulls make money. Bears make money. Pigs get slaughtered.`,
+    `A turkey lives a great life for 1000 days. Then it's served for dinner.`,
+    `Daily reminder: $BTC will become the global reserve asset.`,
+    `$BTC is the soundest money to ever exist.`,
+    `Don’t forget, our investing thesis is free: https://learn2earn.network/momentum-based-investing-a-thesis-for-cryptocurrency/`,
+    `When you have conviction, go for the throat.`,
+    `#Crypto is an asymmetric game of hot potato. Don’t get left holding the bag.`,
+    `I’m here to get rich in terms of #satoshis and #dollars. Will openly admit it. Anyone else?`,
+    `Tech is cool, but I’m here to get paid. Who else?`,
+    `Daily reminder: $BTC is a green investment.`,
+    `A fit body, a calm mind, a house full of love. These cannot be bough.`,
+    `“You make your own luck if you stay at it long enough.”`,
+    `The harder I work, the luckier I get.`,
+    `Daily reminder that the stock market and the economy are different. Convergence is typically convex in opportunity.`,
+    `First step: make money. Second step: don’t lose it.`,
+    `May the wick ever be in your favor.`,
+    `Making money is easy. Hard part is keeping it.`,
+    `Don’t take yourself so seriously. You’re just a monkey with a plan.`,
+    `Passion looks like hard work from the outside, but feels effortless.`,
+    `The three most harmful addictions are heroin, carbohydrates, and a salary.`,
+    `A Stoic is someone who transforms fear into prudence, pain into transformation, mistakes into initiation, and desire into undertaking`,
+    `It's not whether you're right or wrong, but how much money you make when you're right and how much you lose when you're wrong.`,
+    `Daily Reminder: the market has exhibited 0 preference to decentralized technology`,
+    `You wouldn’t stand in front of a missing train. Don’t short a trending market because you’re bored. Hedge when you have a reason,`
+];
+function quotesTweet() {
+    // get random tweet
+    let randomIndex = Math.round(Math.random() * quotesTweets.length) - 1;
+    let selectedQuoteTweet = quotesTweets[randomIndex];
+    console.log(selectedQuoteTweet)
+    // tweet the content
+    tweet(selectedQuoteTweet);
+};
+quotesTweet();
 
 //////////////////////////
 // SCHEDULE THE CRONJOB //
@@ -405,3 +506,10 @@ const scheduledGnTweets = cron.schedule('0 1 * * *', gnTweet, {
     timezone: 'America/Los_Angeles',
 });
 scheduledGnTweets.start();
+
+// Quote tweet //
+const scheduledQuoteTweets = cron.schedule('0 9,15 * * *', quotesTweet, {
+    scheduled: true,
+    timezone: 'America/Los_Angeles',
+});
+scheduledQuoteTweets.start();
