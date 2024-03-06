@@ -47,7 +47,7 @@ function testTweet() {
     // tweet the content
     tweet(selectedTweet);
 };
-testTweet();
+// testTweet();
 
 //////////////////////////
 // SCHEDULE THE CRONJOB //
@@ -63,8 +63,8 @@ const cron = require('node-cron');
     // * = The day of the week when the task should run
 
 // Good morning //
-const scheduledTestTweets = cron.schedule('0 7 * * *', testTweet, {
-    scheduled: true,
-    timezone: 'America/Los_Angeles',
-});
-scheduledTestTweets.start();
+// const scheduledTestTweets = cron.schedule('0 7 * * *', testTweet, {
+//     scheduled: true,
+//     timezone: 'America/Los_Angeles',
+// });
+// scheduledTestTweets.start();
