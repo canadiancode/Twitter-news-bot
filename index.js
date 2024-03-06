@@ -464,7 +464,7 @@ function quotesTweet() {
     // tweet the content
     tweet(selectedQuoteTweet);
 };
-quotesTweet();
+
 
 //////////////////////////
 // SCHEDULE THE CRONJOB //
