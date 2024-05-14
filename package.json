@@ -22,6 +22,7 @@
     "dotenv": "^16.0.3",
     "node-cron": "^3.0.2",
     "openai": "^3.2.1",
+    "os": "^0.1.2",
     "path": "^0.12.7",
     "puppeteer": "^19.8.3",
     "twitter-api-v2": "^1.14.2"
