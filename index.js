@@ -17,13 +17,6 @@ const { OpenAIApi, Configuration } = require('openai');
 const { TwitterApi } = require('twitter-api-v2');
 const cron = require('node-cron');
 
-// The arrays for holding the URL, article, and tweet 
-let article_URL_Array = [];
-let used_Url_Array = [];
-let article_Content_Array = [];
-let articleContent = [];
-let tweet_Array = [];
-
 // strings and numbers holding the market cap % increase data
 let name = 'Bitcoin';
 let market_cap_change_24H = 27.12123;
@@ -42,7 +35,7 @@ let marketCapTweet = '';
 // fetch the API key for the first argument in the post request 
 const OpenAPI_Key = process.env.OPEN_AI_API_KEY;
 const configuration = new Configuration({
-    apiKey: OpenAPI_Key,
+    apiKey: OpenAPI_Key
 });
 
 // Add the fethced API to the first argument of the post request
@@ -124,15 +117,13 @@ const options = {
 };
 
 // retrieve the URL's from Rapid API
+let article_Url_Array = [];
+let used_Url_Array = [];
+let descriptions = [];
 function runTwitterBot() {
 
     axios.request(options).then(
         async function (response) {
-        
-            // remove old Titles, URL's, Articles, and Tweets from the previous day
-            article_Content_Array = []; 
-            tweet_Array = [];
-            article_URL_Array = [];
 
             // loop through fetch data and push the URL's into an array
             console.log('Received data: ', response.data);
@@ -140,46 +131,32 @@ function runTwitterBot() {
                 let url = data.url;
 
                 // check to see if this is the issue
-                article_URL_Array.push(url);
-                used_Url_Array.push(url);
+                // article_Url_Array.push(url);
+                // used_Url_Array.push(url);
 
                 // Check if we've already posted about this
-                // if (used_Url_Array.includes(url)) {
-                //     console.log(`Already used the story: ${url}`);
-                // } else {
-                //     article_URL_Array.push(url);
-                //     used_Url_Array.push(url);
-                // };
+                if (used_Url_Array.includes(url)) {
+                    console.log(`Already used the story: ${url}`);
+                } else {
+                    article_Url_Array.push(url);
+                    descriptions.push(data.description);
+                    used_Url_Array.push(url);
+                };
             });
 
             // Remove old articles that we've posted above to save on storage
             if (used_Url_Array.length > 50) {
-                // this code below
                 // let numberOfOldArticles = 50 - used_Url_Array.length;
                 // used_Url_Array.splice(0, numberOfOldArticles);
                 used_Url_Array.splice(0, used_Url_Array.length - 50);
             };
-        
-            // looping over each URL to scrape
-            let formattedFullLengthArticles = [];
-            console.log('article_URL_Array: ', article_URL_Array);
-            for await (const url of article_URL_Array) {
-                try {
-                    if (url) {
-                        let formattedFullLengthArticle = await scrapeArticle(url);
-                        formattedFullLengthArticles.push(formattedFullLengthArticle);
-                        console.log('The scraped article: ', formattedFullLengthArticle);
-                    };
-                } catch (error) {
-                    console.log('Could not scarpe site: ', error.message);
-                };
-            };
             
             let theTweets = [];
             // looping over articles for OpenAI to summarize 
-            for (const article of formattedFullLengthArticles) {
-                if (article) {
-                    let theTweet = await summarizeArticle(article);
+            console.log('The descriptions: ', descriptions);
+            for (const description of descriptions) {
+                if (description) {
+                    let theTweet = await summarizeArticle(description);
                     console.log('The finalized tweet: ', theTweet);
                     theTweets.push(theTweet);
                 };
@@ -207,10 +184,11 @@ function runTwitterBot() {
 };
 runTwitterBot();
 
-// function to scrape paragraph elements from URL
+// Scrape paragraph elements from URL via puppeteer //
 async function scrapeArticle(url) {
 
     // Set the cache directory within the writable /tmp directory
+    // AWS Lightsail: /home/bitnami/.cache/puppeteer
     const cacheDir = path.join(__dirname, '/tmp/cache/puppeteer');
 
     // set up the browser and navigate to URL
@@ -224,39 +202,43 @@ async function scrapeArticle(url) {
             `--disk-cache-dir=${cacheDir}`
             ],
             executablePath: process.env.GOOGLE_CHROME_BIN || '',
-            headless: false
+            headless: true
     });
 
     try {
 
         const page = await browser.newPage();
-        await page.goto(url);
+        await page.goto(url, { waitUntil: 'networkidle0' });
+        await page.setBypassCSP(true);
 
-        // Wait 5 seconds, and scroll down
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        console.log('I made it!');
+
+        // Wait 1 second, and scroll down
+        await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    
+        console.log('AT THE BOTTOM DAWG');
 
-        // Wait a bit for any lazy-loaded content to load
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        // select all the elements with the class of .at-text (Two Dollar Signs allows to fetch all elements, whereas one Dollar sign is the first element in the DOM)
+        // Option 1
+        await page.waitForSelector('.at-text', {timeout: 5000});
         const paragraphElements = await page.$$('.at-text');
-
+        
+        // console.log('paragraphElements: ', paragraphElements);
+        
         // array to contain article content
-        articleContent = [];
+        let articleContent = [];
 
         // Loop through all paragraph elements
-        for (const paragraph of paragraphElements) {
+        for await (const paragraph of paragraphElements) {
+            // console.log('paragraph: ', paragraph);
             let textContent = await paragraph.evaluate(el => el.textContent);
             let formattedTextContent = await textContent.replace(/'|’/g, '');
+            // console.log('formattedTextContent: ', formattedTextContent);
             articleContent.push(await formattedTextContent);
         };
         let formattedArticle = articleContent.join(' ');
-        article_Content_Array.push(formattedArticle);
-
         console.log('scraped the site!');
         return formattedArticle;
-
     } catch(error) {
         console.log('In the scrapeArticle() function:' , error.message);
         console.log('Could not scrape the site...')
@@ -267,9 +249,10 @@ async function scrapeArticle(url) {
 
 const callToAction = ['\n\nFollow for more real time news ❤️', '\n\nShow support and press the buttons👇🏻🥹', '\n\nStay updated, hit follow! 🔔✨', '\n\nFollow for daily insights! 🧠📊', '\n\nDont miss out, follow today! 📈🔥', '\n\nGet the latest, follow here! 🎯⚡', '\n\nShare the love, follow us! 💙🔄', '\n\nTap follow for trending news! 📣🌍', '\n\nKeep up with us, hit follow! 🏃💡', '\n\nJoin our growing community! 🌱👥', '\n\nStay ahead, follow for updates! 🚀📲', '\n\nBe in the loop, follow and share! 🔄⭕', '\n\nFollow for your daily dose! ☕📅', '\n\nStay informed, tap follow! 🎓🌐', '\n\nJoin us, follow for more! 🤝🔝', '\n\nGet the scoop, follow now! 🍦📰', '\n\nFollow for real-time updates! ⏰🌟', '\n\nYour news hub, follow us! 📌🗂️', '\n\nStay current, follow us today! 📆🔍', '\n\nFollow and stay tuned! 📺🔊'];
 
+// Send the article to chatGPT, and construct the tweet //
 async function summarizeArticle(scrapedArticle) {
 
-    // console.log('The article to summarize is: ', scrapedArticle);
+    const callToAction = ['\n\nFollow for more real time news ❤️', '\n\nShow support and press the buttons👇🏻🥹', '\n\nStay updated, hit follow! 🔔✨', '\n\nFollow for daily insights! 🧠📊', '\n\nDont miss out, follow today! 📈🔥', '\n\nGet the latest, follow here! 🎯⚡', '\n\nShare the love, follow us! 💙🔄', '\n\nTap follow for trending news! 📣🌍', '\n\nKeep up with us, hit follow! 🏃💡', '\n\nJoin our growing community! 🌱👥', '\n\nStay ahead, follow for updates! 🚀📲', '\n\nBe in the loop, follow and share! 🔄⭕', '\n\nFollow for your daily dose! ☕📅', '\n\nStay informed, tap follow! 🎓🌐', '\n\nJoin us, follow for more! 🤝🔝', '\n\nGet the scoop, follow now! 🍦📰', '\n\nFollow for real-time updates! ⏰🌟', '\n\nYour news hub, follow us! 📌🗂️', '\n\nStay current, follow us today! 📆🔍', '\n\nFollow and stay tuned! 📺🔊'];
 
     try {
 
@@ -293,7 +276,6 @@ async function summarizeArticle(scrapedArticle) {
         let summarizedTweet = response.data.choices[0].text;
         let formattedTweet = summarizedTweet.trim();
         let finalTweet = formattedTweet.concat(callToAction[randomIndex]);
-        tweet_Array.push(finalTweet);
         // console.log(`OpenAI made the tweet: ${finalTweet}`);
         return finalTweet;
     } catch(error) {
@@ -708,7 +690,7 @@ ${hashtags}
     // * = The day of the week when the task should run
 
 // Crypto News //
-const scheduledNewsTweets = cron.schedule('0 6,12 * * *', runTwitterBot, {
+const scheduledNewsTweets = cron.schedule('0 6 * * *', runTwitterBot, {
     scheduled: true,
     timezone: 'America/Los_Angeles',
 });
